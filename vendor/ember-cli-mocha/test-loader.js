@@ -12,15 +12,12 @@ jQuery(document).ready(function() {
     moduleGrep = new RegExp(decodeURIComponent(query.module_grep));
   }
   TestLoader.prototype.shouldLoadModule = function(moduleName) {
-    var moduleMatch;
     if (moduleGrep) {
-      moduleMatch = moduleName.match(moduleGrep);
+      return moduleName.match(moduleGrep) && moduleName.match(/[-_]test$/);
     }
     else {
-      moduleMatch = true;
+      return moduleName.match(/[-_]test$/) || moduleName.match(/\.jshint$/);
     }
-    return moduleMatch &&
-        (moduleName.match(/[-_]test$/) || moduleName.match(/\.jshint$/));
   };
 
   TestLoader.prototype.moduleLoadFailure = function(moduleName, error) {
