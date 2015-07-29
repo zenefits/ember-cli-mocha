@@ -6,8 +6,21 @@ jQuery(document).ready(function() {
   window.expect = chai.expect;
 
   var TestLoader = require('ember-cli/test-loader')['default'];
+  var query = Mocha.utils.parseQuery(window.location.search || '');
+  var moduleGrep;
+  if (query.module_grep) {
+    moduleGrep = new RegExp(decodeURIComponent(query.module_grep));
+  }
   TestLoader.prototype.shouldLoadModule = function(moduleName) {
-    return moduleName.match(/[-_]test$/) || moduleName.match(/\.jshint$/);
+    var moduleMatch;
+    if (moduleGrep) {
+      moduleMatch = moduleName.match(moduleGrep);
+    }
+    else {
+      moduleMatch = true;
+    }
+    return moduleMatch &&
+        (moduleName.match(/[-_]test$/) || moduleName.match(/\.jshint$/));
   };
 
   TestLoader.prototype.moduleLoadFailure = function(moduleName, error) {
