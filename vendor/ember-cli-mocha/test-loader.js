@@ -13,10 +13,10 @@ jQuery(document).ready(function() {
   }
   TestLoader.prototype.shouldLoadModule = function(moduleName) {
     if (moduleGrep) {
-      return moduleName.match(moduleGrep) && moduleName.match(/[-_]test$/);
+      return moduleGrep.test(moduleName) && (/[-_]test$/.test(moduleName) || /\.jshint$/.test(moduleName));
     }
     else {
-      return moduleName.match(/[-_]test$/) || moduleName.match(/\.jshint$/);
+	    return /[-_]test$/.test(moduleName) || /\.jshint$/.test(moduleName);
     }
   };
 
